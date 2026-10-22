@@ -249,10 +249,12 @@ body.ro .check{cursor:default}
   <div class="gate-card">
     <svg class="brand-mark" width="36" height="36" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 23 A11 11 0 0 1 27 23"/><circle cx="16" cy="23" r="2.6"/></svg>
     <h1>REVIVAL Team</h1>
-    <p id="gate-text">Sign in with your work email. We'll send you a link to open the board.</p>
+    <p id="gate-text">Sign in with your email and password.</p>
     <form id="gate-form" novalidate>
-      <label class="field"><span class="eyebrow">Email</span><input class="input" id="gate-email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
-      <button class="btn primary" id="gate-send" type="submit" style="justify-content:center">Email me a sign-in link</button>
+      <label class="field"><span class="eyebrow">Email</span><input class="input" id="gate-email" type="email" autocomplete="username" required placeholder="you@example.com"></label>
+      <label class="field"><span class="eyebrow">Password</span><input class="input" id="gate-password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary" id="gate-send" type="submit" style="justify-content:center">Sign in</button>
+      <span class="hint" style="color:var(--muted)">Forgot your password? Ask Kasper to reset it.</span>
     </form>
     <button class="btn" id="gate-out" type="button" hidden style="margin-top:10px">Use a different email</button>
     <div class="gate-msg" id="gate-msg" role="status" aria-live="polite"></div>
@@ -846,7 +848,7 @@ function showGate(state, msg){
   $('gate-out').hidden = !notMember;
   $('gate-text').textContent = notMember
     ? 'You’re signed in, but this email isn’t on the team list yet. Ask Kasper to add it, or sign in with a different email.'
-    : 'Sign in with your work email. We’ll email you a link that opens the board.';
+    : 'Sign in with your email and password.';
   const m = $('gate-msg'); m.textContent = msg || ''; m.className = 'gate-msg';
 }
 async function isMember(){
@@ -864,16 +866,17 @@ async function enter(session){
 function bindGate(){
   $('gate-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const email = $('gate-email').value.trim().toLowerCase(), m = $('gate-msg'), btn = $('gate-send');
+    const email = $('gate-email').value.trim().toLowerCase(), password = $('gate-password').value, m = $('gate-msg'), btn = $('gate-send');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ m.className = 'gate-msg err'; m.textContent = 'Enter your full email address.'; return; }
-    btn.disabled = true; m.className = 'gate-msg'; m.textContent = 'Sending…';
-    const {error} = await sb.auth.signInWithOtp({email, options: {emailRedirectTo: location.origin + location.pathname}});
+    if (!password){ m.className = 'gate-msg err'; m.textContent = 'Enter your password.'; return; }
+    btn.disabled = true; m.className = 'gate-msg'; m.textContent = 'Signing in…';
+    const {error} = await sb.auth.signInWithPassword({email, password});
     btn.disabled = false;
     if (error){
       m.className = 'gate-msg err';
-      m.textContent = error.status === 429 ? 'Too many sign-in emails just now. Wait a few minutes, then try again.' : 'That didn’t go through. Check the email address and try again.';
+      m.textContent = error.status === 429 ? 'Too many tries just now. Wait a few minutes, then try again.' : 'That email and password don’t match. Try again, or ask Kasper to reset your password.';
     } else {
-      m.className = 'gate-msg ok'; m.textContent = 'Check your inbox. Click the link in the email from Supabase to open the board.';
+      m.textContent = ''; $('gate-password').value = '';
     }
   });
   $('gate-out').addEventListener('click', async () => { await sb.auth.signOut(); showGate('signin'); });
