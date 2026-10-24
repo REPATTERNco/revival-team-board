@@ -18,7 +18,7 @@
   --accent:#0E5A55; --accent-ink:#FFFFFF; --accent-soft:#D6E8E2;
   --high:#AE3B29; --high-soft:#F6E0DA; --med:#8F6410; --med-soft:#F4E8CF; --low:#57666F; --low-soft:#E3E8EB;
   --good:#2C7347; --good-soft:#DCEEE2; --warn:#9C5B14; --warn-soft:#F5E6D1;
-  --lily:#AE4568; --kasper:#2A5F9C; --laura:#4A7F3F;
+  --lily:#AE4568; --kasper:#2A5F9C; --laura:#4A7F3F; --john:#6B4FA0;
   --scrim:rgba(14,22,19,.42);
   --shadow:0 1px 2px rgba(21,32,27,.05),0 6px 20px rgba(21,32,27,.05);
   --f-display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
@@ -31,7 +31,7 @@
   --accent:#5BC1B3; --accent-ink:#05201C; --accent-soft:#17362F;
   --high:#EF8A74; --high-soft:#3A1F19; --med:#DDB257; --med-soft:#342913; --low:#A2B1BB; --low-soft:#212A30;
   --good:#70C691; --good-soft:#172F1F; --warn:#E19F5A; --warn-soft:#342413;
-  --lily:#E489A7; --kasper:#80B0E6; --laura:#93C684;
+  --lily:#E489A7; --kasper:#80B0E6; --laura:#93C684; --john:#B7A2EA;
   --scrim:rgba(0,0,0,.6); --shadow:0 1px 0 rgba(0,0,0,.25);
   color-scheme:dark;
 }}
@@ -41,7 +41,7 @@
   --accent:#5BC1B3; --accent-ink:#05201C; --accent-soft:#17362F;
   --high:#EF8A74; --high-soft:#3A1F19; --med:#DDB257; --med-soft:#342913; --low:#A2B1BB; --low-soft:#212A30;
   --good:#70C691; --good-soft:#172F1F; --warn:#E19F5A; --warn-soft:#342413;
-  --lily:#E489A7; --kasper:#80B0E6; --laura:#93C684;
+  --lily:#E489A7; --kasper:#80B0E6; --laura:#93C684; --john:#B7A2EA;
   --scrim:rgba(0,0,0,.6); --shadow:0 1px 0 rgba(0,0,0,.25);
   color-scheme:dark;
 }
@@ -183,7 +183,7 @@ textarea.input{min-height:96px;resize:vertical;line-height:1.45}
 .st-waiting{color:var(--warn);background:var(--warn-soft)}
 .who{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--ink)}
 .who::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
-.o-lily{--c:var(--lily)} .o-kasper{--c:var(--kasper)} .o-laura{--c:var(--laura)}
+.o-lily{--c:var(--lily)} .o-kasper{--c:var(--kasper)} .o-laura{--c:var(--laura)} .o-john{--c:var(--john)}
 .due{font-family:var(--f-mono);font-size:12px}
 .due.over{color:var(--high);font-weight:500}
 .tag{font-size:11.5px;border:1px solid var(--line-strong);border-radius:999px;padding:0 7px}
@@ -273,6 +273,7 @@ body.ro .check{cursor:default}
       <button class="tab" role="tab" id="tab-lily" data-view="lily" style="--c:var(--lily)"><span class="dot"></span>Lily <span class="n" id="n-lily"></span></button>
       <button class="tab" role="tab" id="tab-kasper" data-view="kasper" style="--c:var(--kasper)"><span class="dot"></span>Kasper <span class="n" id="n-kasper"></span></button>
       <button class="tab" role="tab" id="tab-laura" data-view="laura" style="--c:var(--laura)"><span class="dot"></span>Laura <span class="n" id="n-laura"></span></button>
+      <button class="tab" role="tab" id="tab-john" data-view="john" style="--c:var(--john)"><span class="dot"></span>John <span class="n" id="n-john"></span></button>
     </nav>
     <span class="mode" id="mode"><i></i><span id="mode-text">Connecting</span><button class="signout" id="signout" type="button">Sign out</button></span>
   </div>
@@ -299,7 +300,7 @@ body.ro .check{cursor:default}
           </div>
           <div class="toolbar">
             <input class="input search" id="f-q" type="search" placeholder="Search tasks" aria-label="Search tasks">
-            <select class="input" id="f-owner" aria-label="Person"><option value="all">Everyone</option><option value="lily">Lily</option><option value="kasper">Kasper</option><option value="laura">Laura</option></select>
+            <select class="input" id="f-owner" aria-label="Person"><option value="all">Everyone</option><option value="lily">Lily</option><option value="kasper">Kasper</option><option value="laura">Laura</option><option value="john">John</option></select>
             <select class="input" id="f-pri" aria-label="Priority"><option value="all">Any priority</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
             <select class="input" id="f-status" aria-label="Status"><option value="open">Not done</option><option value="todo">To do</option><option value="doing">In progress</option><option value="waiting">Waiting</option><option value="done">Done</option><option value="all">All</option></select>
             <select class="input" id="f-area" aria-label="Area"><option value="all">Every area</option></select>
@@ -328,7 +329,7 @@ body.ro .check{cursor:default}
     <h3 id="editor-title">Add task</h3>
     <div class="form-grid">
       <div class="field full"><label for="e-title">Task</label><input class="input" id="e-title" required maxlength="200" placeholder="What needs to happen"></div>
-      <div class="field"><label for="e-owner">Owner</label><select class="input" id="e-owner"><option value="lily">Lily</option><option value="kasper">Kasper</option><option value="laura">Laura</option></select></div>
+      <div class="field"><label for="e-owner">Owner</label><select class="input" id="e-owner"><option value="lily">Lily</option><option value="kasper">Kasper</option><option value="laura">Laura</option><option value="john">John</option></select></div>
       <div class="field"><label for="e-status">Status</label><select class="input" id="e-status"><option value="todo">To do</option><option value="doing">In progress</option><option value="waiting">Waiting</option><option value="done">Done</option></select></div>
       <div class="field full"><label id="e-pri-l">Priority</label>
         <div class="seg" role="radiogroup" aria-labelledby="e-pri-l">
@@ -364,9 +365,10 @@ body.ro .check{cursor:default}
 const PEOPLE = {
   lily:   {name:'Lily',   full:'Dr. Lily Baker', role:'Founder of REPATTERN co and REVIVAL'},
   kasper: {name:'Kasper', full:'Kasper Hytonen', role:'Synchro Social · strategy, pages, AI and automations'},
-  laura:  {name:'Laura',  full:'Laura',          role:'Synchro Social · social media, email and design'}
+  laura:  {name:'Laura',  full:'Laura',          role:'Synchro Social · social media, email and design'},
+  john:   {name:'John',   full:'Dr. John Baker', role:'REPATTERN co · personal brand, podcast and Catalyst Cream'}
 };
-const ORDER = ['lily','kasper','laura'];
+const ORDER = ['lily','kasper','laura','john'];
 const PRI = {high:{label:'High',rank:0}, medium:{label:'Medium',rank:1}, low:{label:'Low',rank:2}};
 const STATUS = {todo:'To do', doing:'In progress', waiting:'Waiting', done:'Done'};
 const DEFAULT_AREAS = ['Pelvic floor launch','Onboarding & community','Diamond AI','Member support','Content','Podcast & YouTube','Funnel & email','Platform & Arketa','Offers','Website','Operations'];

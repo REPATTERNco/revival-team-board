@@ -1,6 +1,6 @@
 # REVIVAL Team Board
 
-Internal task board for Dr. Lily Baker's REVIVAL team (Lily, Kasper, Laura), served at https://team.repatternco.com.
+Internal task board for Dr. Lily Baker's REVIVAL team (Lily, Kasper, Laura, John), served at https://team.repatternco.com.
 
 - `index.html` is the whole site: dashboard, a tab per person, the monthly member goal.
 - Data lives in the Supabase project **REVIVAL Team Board** (tables `board_tasks`, `board_goals`, `board_members`).
